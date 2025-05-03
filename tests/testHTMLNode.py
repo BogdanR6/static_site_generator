@@ -67,3 +67,8 @@ class TestHTMLNode(unittest.TestCase):
             self.assertTrue(False)
         except ValueError:
             pass
+
+    def test_propsToHtml(self):
+        self.assertEqual(self.htmlNode3.propsToHtml(),
+                         ' href="exemple.com" target="_blank"')
+        self.assertEqual(self.htmlNode1.propsToHtml(), '')

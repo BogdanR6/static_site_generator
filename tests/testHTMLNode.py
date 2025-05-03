@@ -1,6 +1,6 @@
 import unittest
 
-from src.htmlnode import HTMLNode
+from src.htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -72,3 +72,7 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(self.htmlNode3.propsToHtml(),
                          ' href="exemple.com" target="_blank"')
         self.assertEqual(self.htmlNode1.propsToHtml(), '')
+
+    def test_leafToHtml(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.toHTML(), "<p>Hello, world!</p>")

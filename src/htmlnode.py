@@ -11,8 +11,6 @@ class HTMLNode:
     ):
         if tag is None and props is not None:
             raise ValueError("Node with no tag can't have props")
-        if value is None and children is None:
-            raise ValueError("Node must have either a value or a child")
         self.tag = tag
         self.value = value
         self.children = children

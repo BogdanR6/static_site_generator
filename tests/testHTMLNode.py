@@ -62,12 +62,6 @@ class TestHTMLNode(unittest.TestCase):
         except ValueError:
             pass
 
-        try:
-            HTMLNode("h1", None, None, {"style": "background-color: green;"})
-            self.assertTrue(False)
-        except ValueError:
-            pass
-
     def test_propsToHtml(self):
         self.assertEqual(self.htmlNode3.propsToHtml(),
                          ' href="exemple.com" target="_blank"')

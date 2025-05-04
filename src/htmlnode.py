@@ -49,3 +49,25 @@ class LeafNode(HTMLNode):
         if self.tag is None:
             return self.value
         return f"<{self.tag}{self.propsToHtml()}>{self.value}</{self.tag}>"
+
+
+class ParentNode(HTMLNode):
+    def __init__(
+        self,
+        tag: str,
+        children: [HTMLNode],
+        props: dict[str, str] | None = None
+    ):
+        super().__init__(tag, None, children, props)
+
+    def toHTML(self) -> str:
+        if self.tag is None or self.tag == '':
+            raise ValueError("Invalid tag for parent node")
+        if self.children is None or self.children == []:
+            raise ValueError(
+                "children must be a non empty list of HTMLNodes for ParentNode"
+            )
+        childHtml = ""
+        for child in self.children:
+            childHtml += child.toHTML()
+        return f"<{self.tag}{self.propsToHtml()}>{childHtml}</{self.tag}>"

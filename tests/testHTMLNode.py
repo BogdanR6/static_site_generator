@@ -1,6 +1,6 @@
 import unittest
 
-from src.htmlnode import HTMLNode, LeafNode
+from src.htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -76,3 +76,68 @@ class TestHTMLNode(unittest.TestCase):
     def test_leafToHtml(self):
         node = LeafNode("p", "Hello, world!")
         self.assertEqual(node.toHTML(), "<p>Hello, world!</p>")
+
+    def test_parentToHtmlWithChildren(self):
+        leafNode1 = LeafNode("p", "paragraph!")
+        leafNode2 = LeafNode("a", "link!")
+        leafNode3 = LeafNode("b", "bold!")
+        leafNode4 = LeafNode("i", "italic!")
+        leafNode5 = LeafNode(None, "plain!")
+        parentNode1 = ParentNode("div", [
+            leafNode1,
+            leafNode2,
+            leafNode3,
+            leafNode4,
+            leafNode5
+        ])
+        self.assertEqual(
+            parentNode1.toHTML(),
+            "<div><p>paragraph!</p><a>link!</a><b>bold!</b><i>italic!</i>plain!</div>"
+        )
+
+    def test_parentToHtmlWithGrandchildren(self):
+        leafNode1 = LeafNode("p", "paragraph!")
+        leafNode2 = LeafNode("a", "link!")
+        leafNode3 = LeafNode("b", "bold!")
+        leafNode4 = LeafNode("i", "italic!")
+        leafNode5 = LeafNode(None, "plain!")
+        parentNode1 = ParentNode("div", [
+            leafNode1,
+            leafNode2,
+            leafNode3,
+            leafNode4,
+            leafNode5
+        ])
+        parentNode2 = ParentNode("p", [
+            parentNode1
+        ])
+        self.assertEqual(
+            parentNode2.toHTML(),
+            "<p><div><p>paragraph!</p><a>link!</a><b>bold!</b><i>italic!</i>plain!</div></p>"
+        )
+
+    def test_parentToHtmlWithNoChildren(self):
+        try:
+            ParentNode("div", []).toHTML()
+            self.assertTrue(False)
+        except ValueError:
+            pass
+
+        try:
+            ParentNode("div", None).toHTML()
+            self.assertTrue(False)
+        except ValueError:
+            pass
+
+    def test_parentToHtmlWithNoTag(self):
+        try:
+            ParentNode("", [HTMLNode()]).toHTML()
+            self.assertTrue(False)
+        except ValueError:
+            pass
+
+        try:
+            ParentNode(None, [HTMLNode()]).toHTML()
+            self.assertTrue(False)
+        except ValueError:
+            pass

@@ -1,6 +1,6 @@
 import unittest
 
-from src.htmlnode import HTMLNode, LeafNode, ParentNode
+from src.html_node import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -62,16 +62,16 @@ class TestHTMLNode(unittest.TestCase):
         except ValueError:
             pass
 
-    def test_propsToHtml(self):
-        self.assertEqual(self.htmlNode3.propsToHtml(),
+    def test_props_to_html(self):
+        self.assertEqual(self.htmlNode3.props_to_html(),
                          ' href="exemple.com" target="_blank"')
-        self.assertEqual(self.htmlNode1.propsToHtml(), '')
+        self.assertEqual(self.htmlNode1.props_to_html(), '')
 
-    def test_leafToHtml(self):
+    def test_leafto_html(self):
         node = LeafNode("p", "Hello, world!")
-        self.assertEqual(node.toHTML(), "<p>Hello, world!</p>")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
 
-    def test_parentToHtmlWithChildren(self):
+    def test_parent_to_html_with_children(self):
         leafNode1 = LeafNode("p", "paragraph!")
         leafNode2 = LeafNode("a", "link!")
         leafNode3 = LeafNode("b", "bold!")
@@ -85,11 +85,11 @@ class TestHTMLNode(unittest.TestCase):
             leafNode5
         ])
         self.assertEqual(
-            parentNode1.toHTML(),
+            parentNode1.to_html(),
             "<div><p>paragraph!</p><a>link!</a><b>bold!</b><i>italic!</i>plain!</div>"
         )
 
-    def test_parentToHtmlWithGrandchildren(self):
+    def test_parent_to_html_with_grandchildren(self):
         leafNode1 = LeafNode("p", "paragraph!")
         leafNode2 = LeafNode("a", "link!")
         leafNode3 = LeafNode("b", "bold!")
@@ -106,32 +106,32 @@ class TestHTMLNode(unittest.TestCase):
             parentNode1
         ])
         self.assertEqual(
-            parentNode2.toHTML(),
+            parentNode2.to_html(),
             "<p><div><p>paragraph!</p><a>link!</a><b>bold!</b><i>italic!</i>plain!</div></p>"
         )
 
-    def test_parentToHtmlWithNoChildren(self):
+    def test_parent_to_html_with_no_children(self):
         try:
-            ParentNode("div", []).toHTML()
+            ParentNode("div", []).to_html()
             self.assertTrue(False)
         except ValueError:
             pass
 
         try:
-            ParentNode("div", None).toHTML()
+            ParentNode("div", None).to_html()
             self.assertTrue(False)
         except ValueError:
             pass
 
-    def test_parentToHtmlWithNoTag(self):
+    def test_parent_to_html_with_no_tag(self):
         try:
-            ParentNode("", [HTMLNode()]).toHTML()
+            ParentNode("", [HTMLNode()]).to_html()
             self.assertTrue(False)
         except ValueError:
             pass
 
         try:
-            ParentNode(None, [HTMLNode()]).toHTML()
+            ParentNode(None, [HTMLNode()]).to_html()
             self.assertTrue(False)
         except ValueError:
             pass

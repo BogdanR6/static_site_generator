@@ -16,10 +16,10 @@ class HTMLNode:
         self.children = children
         self.props = props
 
-    def toHTML(self) -> str:
+    def to_html(self) -> str:
         raise NotImplementedError
 
-    def propsToHtml(self) -> str:
+    def props_to_html(self) -> str:
         if self.props is None:
             return ""
         html = ""
@@ -29,7 +29,7 @@ class HTMLNode:
 
     def __repr__(self):
         return f'<{str(self.children)}> \
-        <{self.tag}{self.propsToHtml()}>{self.value}<{self.tag}>'
+        <{self.tag}{self.props_to_html()}>{self.value}<{self.tag}>'
 
 
 class LeafNode(HTMLNode):
@@ -41,12 +41,12 @@ class LeafNode(HTMLNode):
     ):
         super().__init__(tag, value, None, props)
 
-    def toHTML(self) -> str:
+    def to_html(self) -> str:
         if self.value is None:
             raise ValueError("LeafNode has no value")
         if self.tag is None:
             return self.value
-        return f"<{self.tag}{self.propsToHtml()}>{self.value}</{self.tag}>"
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
 
 class ParentNode(HTMLNode):
@@ -58,14 +58,14 @@ class ParentNode(HTMLNode):
     ):
         super().__init__(tag, None, children, props)
 
-    def toHTML(self) -> str:
+    def to_html(self) -> str:
         if self.tag is None or self.tag == '':
             raise ValueError("Invalid tag for parent node")
         if self.children is None or self.children == []:
             raise ValueError(
                 "children must be a non empty list of HTMLNodes for ParentNode"
             )
-        childHtml = ""
+        child_html = ""
         for child in self.children:
-            childHtml += child.toHTML()
-        return f"<{self.tag}{self.propsToHtml()}>{childHtml}</{self.tag}>"
+            child_html += child.to_html()
+        return f"<{self.tag}{self.props_to_html()}>{child_html}</{self.tag}>"

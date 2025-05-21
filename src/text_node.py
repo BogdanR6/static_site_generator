@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import Enum
-from src.htmlnode import HTMLNode, LeafNode
+from src.html_node import HTMLNode, LeafNode
 
 
 class TextType(Enum):
@@ -16,49 +16,49 @@ class TextNode:
     def __init__(
         self,
         text: str | None = None,
-        textType: TextType | None = None,
+        text_type: TextType | None = None,
         url: str = None
     ):
-        if textType not in TextType:
+        if text_type not in TextType:
             raise ValueError("Invalid textType")
-        if textType == TextType.IMAGE or textType == TextType.LINK:
+        if text_type == TextType.IMAGE or text_type == TextType.LINK:
             if url is None:
                 raise ValueError("URL cannot be None for IMAGES and LINKS")
         elif url is not None:
             raise ValueError("URL can be set only for IMAGES and LINKS")
 
         self.text = text
-        self.textType = textType
+        self.text_type = text_type
         self.url = url
 
     def __eq__(self, otherTextNode: TextNode):
         return (
             self.text == otherTextNode.text and
-            self.textType == otherTextNode.textType and
+            self.text_type == otherTextNode.text_type and
             self.url == otherTextNode.url
         )
 
     def __repr__(self):
         return f"TextNode({self.text}, \
         {
-            self.textType.value
-            if self.textType.value is not None and self.textType in TextType
+            self.text_type.value
+            if self.text_type.value is not None and self.text_type in TextType
             else None
         }, \
         {self.url})"
 
-    def toHTMLNode(self) -> HTMLNode:
-        if self.textType not in TextType:
-            raise ValueError(f"Invalid textType {self.textType}")
-        if self.textType == TextType.TEXT:
+    def to_html_node(self) -> HTMLNode:
+        if self.text_type not in TextType:
+            raise ValueError(f"Invalid text_type {self.textType}")
+        if self.text_type == TextType.TEXT:
             return LeafNode(None, self.text)
-        if self.textType == TextType.BOLD:
+        if self.text_type == TextType.BOLD:
             return LeafNode("b", self.text)
-        if self.textType == TextType.ITALIC:
+        if self.text_type == TextType.ITALIC:
             return LeafNode("i", self.text)
-        if self.textType == TextType.CODE:
+        if self.text_type == TextType.CODE:
             return LeafNode("code", self.text)
-        if self.textType == TextType.LINK:
+        if self.text_type == TextType.LINK:
             return LeafNode("a", self.text, {"href": self.url})
-        if self.textType == TextType.IMAGE:
+        if self.text_type == TextType.IMAGE:
             return LeafNode("img", None, {"src": self.url, "alt": self.text})
